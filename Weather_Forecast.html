@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Weather Forecast</title>
+  <style>
+    :root {
+      --bg-color: #ddeeff;
+      --text-color: #000;
+      --card-bg: #ffffff;
+      --button-bg: #0077cc;
+      --button-hover: #005fa3;
+    }
+
+    body.dark {
+      --bg-color: #1e1e2f;
+      --text-color: #f0f0f0;
+      --card-bg: #2e2e3e;
+      --button-bg: #3333aa;
+      --button-hover: #222288;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      transition: background 0.3s, color 0.3s;
+      overflow-x: hidden;
+    }
+
+    header {
+          position: relative;
+          padding: 20px 30px;
+          text-align: center;
+    }
+    
+        h1 {
+      margin: 0;
+      font-size: 1.8rem;
+    }
+
+    .dark-toggle {
+      font-size: 1rem;
+      background-color: var(--button-bg);
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      position: absolute;
+          right: 30px;
+          top: 20px;
+    }
+
+    .dark-toggle:hover {
+      background-color: var(--button-hover);
+    }
+    
+        .container {
+      text-align: center;
+      padding: 20px;
+    }
+
+    .search-bar {
+      margin-top: 10px;
+      margin-bottom: 20px;
+    }
+
+    input[type="text"] {
+      padding: 8px 12px;
+      font-size: 1rem;
+      width: 220px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      margin-right: 8px;
+    }
+
+    button {
+      padding: 8px 14px;
+      font-size: 1rem;
+      background-color: var(--button-bg);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: var(--button-hover);
+    }
+    
+    .weather-box {
+      background-color: var(--card-bg);
+      border-radius: 12px;
+      box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+      display: inline-block;
+      padding: 25px;
+      margin-top: 20px;
+      min-width: 300px;
+    }
+
+    .temp {
+      font-size: 2rem;
+      font-weight: bold;
+      margin: 10px 0;
+    }
+
+    .condition {
+      font-style: italic;
+      font-size: 1.1rem;
+    }
+
+    .sun-info, .time-info, .minmax-today {
+      margin-top: 10px;
+      font-size: 0.95rem;
+    }
+
+    .forecast {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-top: 30px;
+    }
+    
+    .day-card {
+      background: var(--card-bg);
+      padding: 16px;
+      border-radius: 12px;
+      box-shadow: 1px 1px 8px rgba(0,0,0,0.1);
+      width: 120px;
+      transition: transform 0.2s;
+    }
+
+    .day-card:hover {
+      transform: scale(1.05);
+    }
+
+    .day-card img {
+      width: 50px;
+      margin: 8px 0;
+    }
+
+    .minmax {
+      font-size: 0.95rem;
+      margin-top: 4px;
+    }
+    
+    .extras {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      font-size: 0.95rem;
+      margin-top: 12px;
+    }
+
+    .info-pair {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    
+        /* Backgrounds */
+    .bg-sunny {
+      background: linear-gradient(to top, #ffecd2, #fcb69f);
+      animation: sunGlow 5s ease-in-out infinite alternate;
+    }
+
+    .bg-cloudy {
+      background: linear-gradient(to top, #d7d2cc, #304352);
+      animation: cloudDrift 20s linear infinite;
+    }
+
+    .bg-rainy {
+      background: linear-gradient(to top, #cfd9df, #e2ebf0);
+    }
+
+    .bg-snowy {
+      background: linear-gradient(to top, #e0f7fa, #fff);
+    }
+    
+        @keyframes sunGlow {
+      from { filter: brightness(1); }
+      to   { filter: brightness(1.15); }
+    }
+
+    @keyframes cloudDrift {
+      0% { background-position: 0% 0%; }
+      100% { background-position: 100% 0%; }
+    }
+
+    @media (max-width: 600px) {
+      .forecast {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .day-card {
+        width: 80%;
+      }
+    }
+    
+    body.dark.bg-sunny {
+        background: linear-gradient(to top, #2a2a2a, #444);
+    }
+    body.dark.bg-cloudy {
+        background: linear-gradient(to top, #1f1f2f, #3a3a5a);
+    }
+    body.dark.bg-rainy {
+        background: linear-gradient(to top, #222831, #393e46);
+    }
+    body.dark.bg-snowy {
+        background: linear-gradient(to top, #2d2f36, #4a4e69);
+    }
+
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Weather Forecast</h1>
+    <button class="dark-toggle" onclick="toggleDarkMode()">☼ Dark Mode</button>
+  </header>
+
+  <div class="container">
+    <div class="search-bar">
+      <input type="text" id="cityInput" placeholder="Enter city name..." />
+      <button onclick="searchCity()">Search</button>
+      <button onclick="getUserLocation()">📍 My Location</button>
+    </div>
+
+    <div class="weather-box" id="weather-box">
+      <p>Fetching the latest weather data...</p>
+    </div>
+
+    <div class="forecast" id="forecast-box"></div>
+  </div>
+
+  <script>
+    const API_KEY = 'e8a2a42499d24f57a5c234846250605';
+    const weatherContainer = document.getElementById('weather-box');
+    const forecastContainer = document.getElementById('forecast-box');
+
+    function toggleDarkMode() {
+      document.body.classList.toggle('dark');
+    }
+    
+        function updateBackground(conditionText) {
+      document.body.classList.remove('bg-sunny', 'bg-cloudy', 'bg-rainy', 'bg-snowy');
+
+      const lowerText = conditionText.toLowerCase();
+
+      if (lowerText.includes("sun") || lowerText.includes("clear")) {
+        document.body.classList.add("bg-sunny");
+      } else if (lowerText.includes("cloud")) {
+        document.body.classList.add("bg-cloudy");
+      } else if (lowerText.includes("rain") || lowerText.includes("drizzle")) {
+        document.body.classList.add("bg-rainy");
+      } else if (lowerText.includes("snow")) {
+        document.body.classList.add("bg-snowy");
+      }
+    }
+
+    async function getWeatherInfo(city) {
+      weatherContainer.innerHTML = `<p>Loading weather for <strong>${city}</strong>...</p>`;
+      forecastContainer.innerHTML = "";
+
+      const forecastUrl = `https://api.weatherapi.com/v1/forecast.json?key=${API_KEY}&q=${city}&days=5`;
+
+      try {
+        const response = await fetch(forecastUrl);
+        if (!response.ok) throw new Error("Failed to fetch weather data.");
+
+        const data = await response.json();
+        const { name, country, localtime } = data.location;
+        const current = data.current;
+        const today = data.forecast.forecastday[0];
+
+        const icon = current.condition.icon;
+        const text = current.condition.text;
+        const tempC = current.temp_c;
+        
+        const maxToday = today.day.maxtemp_c;
+        const minToday = today.day.mintemp_c;
+        const sunrise = today.astro.sunrise;
+        const sunset = today.astro.sunset;
+
+        updateBackground(text);
+
+        const wind = current.wind_kph;
+        const humidity = current.humidity;
+        const uv = current.uv;
+        const feelsLike = current.feelslike_c;
+        const chanceOfRainToday = today.day.daily_chance_of_rain;
+
+        weatherContainer.innerHTML = `
+          <h2>${name}, ${country}</h2>
+          <img src="https:${icon}" alt="${text}" />
+          <div class="temp">${tempC}°C</div>
+          <div style="font-size: 1rem; color: gray;">Feels like: ${feelsLike}°C</div>
+          <p class="condition"><b>${text}</b></p>
+
+          <div class="minmax-today">⬆ Max: ${maxToday}°C<br>⬇ Min: ${minToday}°C</div>
+          <div class="time-info"><b>Local Time: ${localtime}</b></div>
+          <div class="extras">
+            <div class="info-pair">
+              <span>☀️ UV Index: <b>${uv}</b></span>
+              <span>💨 Wind: <b>${wind} kph</b></span>
+            </div>
+            <div class="info-pair">
+              <span>💧 Humidity: <b>${humidity}%</b></span>
+              <span>🌧️ Rain: <b>${chanceOfRainToday}%</b></span>
+            </div>
+          </div>
+
+          
+          <div class="sun-info">🌅 Sunrise: ${sunrise} | 🌇 Sunset: ${sunset}</div>
+        `;
+
+
+        data.forecast.forecastday.forEach((day) => {
+          const forecastDate = new Date(day.date);
+          const dayName = forecastDate.toLocaleDateString(undefined, { weekday: 'short' });
+
+          const min = day.day.mintemp_c;
+          const max = day.day.maxtemp_c;
+          const avg = day.day.avgtemp_c;
+          const wind = day.day.maxwind_kph;
+          const humidity = day.day.avghumidity;
+          const chanceOfRain = day.day.daily_chance_of_rain;
+
+          forecastContainer.innerHTML += `
+            <div class="day-card">
+              <strong>${dayName}</strong>
+              <img src="https:${day.day.condition.icon}" alt="${day.day.condition.text}" />
+              <div class="minmax">
+                ⬆ ${max}°C<br>
+                ⬇ ${min}°C<br>
+                🌧️ ${chanceOfRain}% rain<br>
+                💨 ${wind} kph wind<br>
+                💧 ${humidity}% humidity<br>
+              </div>
+            </div>
+          `;
+        });
+
+
+
+      } catch (err) {
+        weatherContainer.innerHTML = `<p>Oops! Something went wrong: ${err.message}</p>`;
+        console.error("Error:", err);
+      }
+    }
+      
+    function searchCity() {
+      const city = document.getElementById('cityInput').value.trim();
+      if (city) {
+        getWeatherInfo(city);
+      } else {
+        alert("Please enter a city name.");
+      }
+    }
+
+    async function getUserLocation() {
+        try {
+          const res = await fetch("https://ipapi.co/json/");
+          if (!res.ok) throw new Error("IP geolocation failed.");
+
+          const data = await res.json();
+          const city = data.city;
+          if (city) {
+            getWeatherInfo(city);
+          } else {
+            alert("Unable to determine city from IP.");
+          }
+        } catch (error) {
+          alert("Unable to retrieve location.");
+          console.error(error);
+        }
+    }
+
+    function toggleDarkMode() {
+          const isDark = document.body.classList.toggle('dark');
+          const toggleBtn = document.querySelector('.dark-toggle');
+          toggleBtn.textContent = isDark ? "☀︎ Light Mode" : "☼ Dark Mode";
+        }
+
+  </script>
+    <footer style="text-align:center; padding: 20px; font-size: 0.9rem; color: gray;">
+    Weather data powered by
+    <a href="https://www.weatherapi.com/" target="_blank" style="color:inherit; text-decoration:underline;">
+      WeatherAPI.com
+    </a>
+  </footer>
+</body>
+</html>
