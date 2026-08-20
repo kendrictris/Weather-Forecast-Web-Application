@@ -18,8 +18,14 @@ PHP was installed and tested while setting up the server (see the `/server-setup
 
 ## Server Setup
 
-This project was set up and run on a Raspberry Pi. Pictures from the setup process (installing Apache, installing PHP, and setting up the server) are in the `/server-setup` folder.
+This project was set up and run on a Raspberry Pi. Recordings of the setup process are linked below:
+
+- Checkpoint 1: [Weather App - Checkpoint 1](https://youtu.be/w9y-0J6hUnc)
+- Checkpoint 2: [Weather App - Checkpoint 2](https://youtu.be/tBeBGsEvRxA)
+- Final: [Weather App - Final](https://youtu.be/c3Lz6zidLtw)
 
 ## Notes
 
 This project was made for a university assignment. The assignment let me choose any idea, so I chose to build this.
+
+
