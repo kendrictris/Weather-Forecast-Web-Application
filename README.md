@@ -14,7 +14,7 @@ Changes the background depending on the weather (sunny, cloudy, rainy, snowy)
 
 HTML, CSS, and JavaScript, all inside one file
 Put on a Raspberry Pi running Linux, using Apache as the web server
-PHP was installed and tested while setting up the server (see the `/server-setup` folder), but the app itself runs fully in the browser using JavaScript
+PHP was installed and tested while setting up the server, but the app itself runs fully in the browser using JavaScript
 
 ## Server Setup
 
