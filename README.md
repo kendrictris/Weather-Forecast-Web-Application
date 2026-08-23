@@ -22,11 +22,7 @@ This project needs a WeatherAPI.com API key to run.
 
 1. Copy `config.example.js` and rename the copy to `config.js`
 2. Open `config.js` and replace the placeholder with your own API key
-3. `config.js` is not included in this repository, since it holds a private key
 
-## Note on API key security
-
-The API key is kept out of this GitHub repository using a `.gitignore` file. However, since this project runs fully in the browser with no backend, the key is still visible to anyone who inspects the live site's network requests. A more complete fix would move the API call behind a small server side script, so the key is never exposed to the browser at all.
 
 ## Server Setup
 
