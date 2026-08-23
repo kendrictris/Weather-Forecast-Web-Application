@@ -16,6 +16,18 @@ HTML, CSS, and JavaScript, all inside one file
 Put on a Raspberry Pi running Linux, using Apache as the web server
 PHP was installed and tested while setting up the server, but the app itself runs fully in the browser using JavaScript
 
+## Setup
+
+This project needs a WeatherAPI.com API key to run.
+
+1. Copy `config.example.js` and rename the copy to `config.js`
+2. Open `config.js` and replace the placeholder with your own API key
+3. `config.js` is not included in this repository, since it holds a private key
+
+## Note on API key security
+
+The API key is kept out of this GitHub repository using a `.gitignore` file. However, since this project runs fully in the browser with no backend, the key is still visible to anyone who inspects the live site's network requests. A more complete fix would move the API call behind a small server side script, so the key is never exposed to the browser at all.
+
 ## Server Setup
 
 This project was set up and run on a Raspberry Pi. Recordings of the setup process are linked below:
